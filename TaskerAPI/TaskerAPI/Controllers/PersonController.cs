@@ -18,7 +18,7 @@ namespace TaskerAPI.Controllers
         [HttpGet]
         public IActionResult GetPerson()
         {
-            var persons = _context.people.ToList();
+            var persons = _context.People.ToList();
 
             return Ok(persons);
         }
@@ -27,7 +27,12 @@ namespace TaskerAPI.Controllers
         [Route("{id:int}")]
         public IActionResult GetPersonDetail([FromRoute] int id)
         {
-            var person = _context.people.Find(id);
+            var person = _context.People.Find(id);
+
+            if (person == null)
+            {
+                return NotFound();
+            }
 
             return Ok(person);
         }
@@ -42,7 +47,7 @@ namespace TaskerAPI.Controllers
 
             if (ModelState.IsValid)
             {
-                _context.people.Add(person);
+                _context.People.Add(person);
                 await _context.SaveChangesAsync();
                 return Ok(person);
             }
@@ -51,5 +56,43 @@ namespace TaskerAPI.Controllers
                 return BadRequest("Invalid data");
             }
         }
+
+        [HttpPut]
+        [Route("{id:int}")]
+        public async Task<IActionResult> UpdatePerson([FromRoute] int id, [FromBody] Person updatedPerson)
+        {
+            var person = await _context.People.FindAsync(id);
+
+            if (person == null)
+            {
+                return NotFound(); 
+            }
+
+            person.Name = updatedPerson.Name ?? person.Name;
+            person.FirstName = updatedPerson.FirstName ?? person.FirstName;
+            person.MiddleName = updatedPerson.MiddleName ?? person.MiddleName;
+
+            await _context.SaveChangesAsync();
+
+            return Ok(person);
+        }
+
+        [HttpDelete]
+        [Route("{id:int}")]
+        public async Task<IActionResult> DeletePerson([FromRoute] int id)
+        {
+            var person = await _context.People.FindAsync(id);
+
+            if (person == null)
+            {
+                return NotFound();
+            }
+
+            _context.People.Remove(person);
+            await _context.SaveChangesAsync();
+
+            return Ok(person);
+        }
     }
+
 }

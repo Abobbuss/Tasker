@@ -9,12 +9,12 @@ namespace TaskerAPI.Data
         {
         }
 
-        public DbSet<Comment> comments { get; set; }
-        public DbSet<Person> people { get; set; }
-        public DbSet<PersonProject> peopleProject { get; set; }
-        public DbSet<Project> projects { get; set; }
-        public DbSet<Models.Task> tasks { get; set; }
-        public DbSet<Models.TaskStatus> tasksStatus { get; set; }
+        public DbSet<Comment> Comments { get; set; }
+        public DbSet<Person> People { get; set; }
+        public DbSet<PersonProject> PeopleProject { get; set; }
+        public DbSet<Project> Projects { get; set; }
+        public DbSet<Models.Task> Tasks { get; set; }
+        public DbSet<Models.TaskStatus> TasksStatus { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
